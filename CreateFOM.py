@@ -47,12 +47,7 @@ os.chdir(rutaDest)
 book.save(newName)
 book.close()
 
-
-
-
 print ("HA CONCLUIDO CON ÉXITO")
-
-
 
 #https://www.youtube.com/watch?v=KiDoIHAokZg
 
