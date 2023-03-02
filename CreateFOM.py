@@ -6,14 +6,23 @@ import openpyxl
 # INICIO ---------
 
 # INGRESO DE DATOS
-tipo = input("Tipo : \n[1]Mejora \n[2]Incidencia \n[3]Requerimiento \n ->")
-anio = input("Digita direccion de carpeta (AÑO)     :")
-name = input("Digita nombre de mejora/incidencia    :")
-cuser = input("Digita cUser del desarrollador        :")
-detail = input("Digita Detalle del cambio             :")
-hoy = datetime.date.today()
 
 tipoList = {1:"Mejora",2:"Incidencia",3:"Requerimiento"}
+undList = {1:"UBI",2:"UBO",3:"UCE",4:"UCR",5:"UFC",6:"UIN",7:"UOP"}
+
+tipo =      input("Tipo : \n[1]Mejora \n[2]Incidencia \n[3]Requerimiento \n ->")
+if tipo=="3":
+    print("Seleccione Unidad")
+    unidad =      input("Tipo :     \n[1]UBI   [2]UBO   [3]UCE   [4]UCR \n[5]UFC   [6]UIN   [7]UOP   \n ->")
+
+print("DIGITE:")
+anio =      input("Direccion de carpeta (AÑO)     :")
+name =      input("Nombre de "+tipoList[int(tipo)]+"    :")
+cuser =     input("cUser del desarrollador        :")
+detail =    input("Detalle del cambio             :")
+hoy = datetime.date.today()
+
+
 # FIN INGRESO DE DATOS
 
 # RUTA DE ORIGEN Y DESTINO PARA INCIDENCIAS Y MEJORAS
