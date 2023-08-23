@@ -47,9 +47,17 @@ try:
     # RENOMBRANDO EL ARCHIVO AL FORMATO:  FECHA-TIPO-NOMBRE-CUSER
     os.rename(rutaDest+nameXLS,newName)
     print("FOM GENERADO EN: " + rutaDest)
+
+    # CREANDO ARCHIVO QUE MUESTRA EL DETALLE
+    f = open(rutaDest+"Detalle.txt","w")
+    f.write("Detalle:"+ detail)
+    f.close()
+
 except shutil.SameFileError:
     print("ERROR AL COPIAR")
 
+
+    #echo %det% > "D:\QA\INCIDENCIAS Y MEJORAS\%ruta%\%ano%-%mes%-%dia% - Incidencia - %nombre% - %dev%\Detalle.txt"
 # MODIFICANDO EL EXCEL
 url= rutaDest+newName
 print(url)
