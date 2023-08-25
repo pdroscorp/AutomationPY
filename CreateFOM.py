@@ -1,4 +1,3 @@
-
 # Dependencias necesarias
 
 import shutil
@@ -14,42 +13,50 @@ undList = {1:"UBI",2:"UBO",3:"UCE",4:"UCR",5:"UFC",6:"UIN",7:"UOP"}
 
 tipo =      input("Tipo : \n[1]Mejora \n[2]Incidencia \n[3]Requerimiento \n ->")
 if tipo=="3":
-    print("Seleccione Unidad")
+    print("Unidad de desarrollo:")
     unidad =      input("Tipo :     \n[1]UBI   [2]UBO   [3]UCE   [4]UCR \n[5]UFC   [6]UIN   [7]UOP   \n ->")
     codigorq =      input("Código de Requerimiento: ")
 
-print("DIGITE:")
-anio =      input("Direccion de carpeta (AÑO)     :")
-name =      input("Nombre de "+tipoList[int(tipo)]+"    :")
-cuser =     input("cUser del desarrollador        :")
-detail =    input("Detalle del cambio             :")
+print("Descripción:")
+anio =      input("Direccion de carpeta (AÑO)   :")
+name =      input("Nombre de "+tipoList[int(tipo)]+":")
+cuser =     input("cUser del desarrollador      :")
+detail =    input("Detalle del cambio           :")
 hoy = datetime.date.today()
-
 
 # FIN INGRESO DE DATOS
 
-# RUTA DE ORIGEN Y DESTINO PARA INCIDENCIAS Y MEJORAS
+# RUTA DE FOM Y NOMBRE DE FORMATO DE FOM
 rutaFOM = "D:/QA/INCIDENCIAS Y MEJORAS/"
-rutaDest = "D:/QA/INCIDENCIAS Y MEJORAS/" + str(anio) + "/"
-# NOMBRE DEL FORMATO DE FOM
-nameXLS = "_FOM_.xlsx"
+nameXLS = "_FOM____ULTIMO.xlsx"
+# RUTA DE ORIGEN Y DESTINO PARA INCIDENCIAS Y MEJORAS
+rutaDestIM = "D:/QA/INCIDENCIAS Y MEJORAS/"
+# RUTA DE ORIGEN Y DESTINO PARA REQUERIMIENTOS
+rutaDestReq = "D:/QA/REQUERIMIENTOS/"
 
 # COPIA EL FOM  A LA RUTA DESTINO
-
-if tipo=="3":
-    rutaDest = "D:/QA/REQUERIMIENTOS/" + undList[int(unidad)] + "/" + str(anio) + "/"
-    newName = str(hoy)+" - "+codigorq+" - "+name+" - "+cuser+".xlsx"
+rutaDest = ""
+newName = ""
+if tipo == "3":
+    rutaDest = rutaDestReq + undList[int(unidad)] + "/" + str(anio) + "/"
+    newName = str(hoy)+" - "+codigorq+" - "+name+" - "+cuser
 else:
-    newName = str(hoy)+" - "+tipoList[int(tipo)]+" - "+name+" - "+cuser+".xlsx"
+    codigorq = "-"
+    rutaDest = rutaDestIM + str(anio) + "/"
+    newName = str(hoy)+" - "+tipoList[int(tipo)]+" - "+name+" - "+cuser
 try:
-    shutil.copy(rutaFOM + nameXLS, rutaDest)
+    rutaFullDest = rutaDest + newName + "/"
     os.chdir(rutaDest)
+    os.mkdir(newName)
+    shutil.copy(rutaFOM + nameXLS, rutaDest+newName)
+    os.chdir(rutaFullDest)
     # RENOMBRANDO EL ARCHIVO AL FORMATO:  FECHA-TIPO-NOMBRE-CUSER
-    os.rename(rutaDest+nameXLS,newName)
-    print("FOM GENERADO EN: " + rutaDest)
+    os.rename(rutaFullDest+nameXLS,newName+ ".xlsx")
+
+    print("FOM GENERADO EN: " + rutaFullDest)
 
     # CREANDO ARCHIVO QUE MUESTRA EL DETALLE
-    f = open(rutaDest+"Detalle.txt","w")
+    f = open(rutaFullDest+"Detalle.txt","w")
     f.write("Detalle:"+ detail)
     f.close()
 
@@ -59,7 +66,7 @@ except shutil.SameFileError:
 
     #echo %det% > "D:\QA\INCIDENCIAS Y MEJORAS\%ruta%\%ano%-%mes%-%dia% - Incidencia - %nombre% - %dev%\Detalle.txt"
 # MODIFICANDO EL EXCEL
-url= rutaDest+newName
+url= rutaFullDest+newName+".xlsx"
 print(url)
 book = openpyxl.load_workbook(url)
 sheet = book.active
@@ -67,9 +74,9 @@ sheet ['C8'] = str(codigorq)
 sheet ['D8'] = str(name)
 sheet ['J8'] = datetime.date.today()
 sheet ['I10'] = datetime.date.today()
-sheet ['C13'] = cuser
-os.chdir(rutaDest)
-book.save(newName)
+sheet ['C13'] = str(cuser)
+os.chdir(rutaFullDest)
+book.save(newName+".xlsx")
 book.close()
 
 print ("HA CONCLUIDO CON ÉXITO")
